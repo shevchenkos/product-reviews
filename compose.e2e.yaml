@@ -1,14 +1,15 @@
 services:
   products-service:
-    image: products-service-prod
+    image: products-service-e2e
     build:
       context: .
       args:
         - APP=products
-      target: production 
+      target: development
     restart: always
     ports:
       - 3000:3000
+    command: npm run test:e2e
     depends_on:
       db:
         condition: service_started 

@@ -25,7 +25,7 @@ describe('AppController (e2e)', () => {
   });
 
   // create product
-  // created 2 reviews
+  // create 2 reviews
   // wait 5 sec
   // check product average rating
   it('reviews processing flow', async () => {
