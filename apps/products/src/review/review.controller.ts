@@ -8,7 +8,7 @@ import {
 } from '@apps/common';
 import { ReviewService } from './review.service';
 
-@Controller('review')
+@Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
