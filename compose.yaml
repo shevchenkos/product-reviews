@@ -1,0 +1,69 @@
+services:
+  products-service:
+    build:
+      context: .
+      args:
+        - APP=products
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      db:
+        condition: service_started 
+      rabbitmq:
+        condition: service_healthy
+  review-processing:
+    build:
+      context: .
+      args:
+        - APP=review-processing
+    restart: always
+    ports:
+      - 3001-3010:3000
+    deploy:
+      mode: replicated
+      replicas: 2  
+    depends_on:
+      db:
+        condition: service_started 
+      rabbitmq:
+        condition: service_healthy
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: 'rabbitmq'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+     - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/mnesia/
+     - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    restart: always
+    healthcheck:
+        test: rabbitmq-diagnostics -q ping
+        interval: 10s
+        timeout: 5s
+        retries: 5
+  db: 
+    image: postgres 
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres 
+      - POSTGRES_DB=products
+    container_name: postgres 
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data 
+    ports:
+      - '5432:5432'  
+  pgadmin:
+    image: dpage/pgadmin4 
+    restart: always 
+    container_name: nest-pgadmin4 
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com 
+      - PGADMIN_DEFAULT_PASSWORD=pgadmin4 
+    ports: 
+      - '5050:80' 
+    depends_on: 
+      - db
