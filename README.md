@@ -2,7 +2,7 @@
 
 ## Running the app
 ```bash
-docker compose  up
+docker compose up
 ```
 
 ## Test

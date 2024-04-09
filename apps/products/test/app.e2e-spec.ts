@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import { Product } from '@apps/common';
 import * as request from 'supertest';
 import { createProductMock, createReviewMock } from './mocks';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -49,7 +49,9 @@ describe('AppController (e2e)', () => {
       .send({ ...createReviewMock, rating: rating2, productId: product.id })
       .expect(201);
 
-    await new Promise((o) => setTimeout(o, 5000));
+    await new Promise((o) => {
+      setTimeout(o, 5000);
+    });
 
     const updated: Product = (
       await request(app.getHttpServer())

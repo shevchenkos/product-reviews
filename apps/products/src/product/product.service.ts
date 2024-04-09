@@ -55,7 +55,7 @@ export class ProductService {
       product,
       updateProductDto,
     );
-    return await this.productsRepository.save(productData);
+    return this.productsRepository.save(productData);
   }
 
   async remove(id: number): Promise<void> {

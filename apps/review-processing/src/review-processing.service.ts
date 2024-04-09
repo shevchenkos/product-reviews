@@ -26,7 +26,7 @@ export class ReviewProcessingService {
   }
 
   private roundTo = (num: number, precision: number): number => {
-    const factor = Math.pow(10, precision);
+    const factor = 10 ** precision;
     return Math.round(num * factor) / factor;
   };
 }
